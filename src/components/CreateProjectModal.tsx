@@ -28,7 +28,7 @@ export function CreateProjectModal({ onClose, onCreate }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold">新規プロジェクト</h2>
+          <h2 className="text-lg font-bold">新規プラン</h2>
           <button
             onClick={onClose}
             className="p-1.5 rounded-xl hover:bg-surface-hover text-muted hover:text-foreground transition-colors"

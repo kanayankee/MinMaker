@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* 
+ * [ダークモード廃止] Tailwindの "dark:" クラスを無効化（適用されないようにする）
+ * 戻す時はこの行を消すかコメントアウトしてください。
+ */
+@custom-variant dark (&:where(.dark-mode-enabled *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -32,6 +38,12 @@
   --accent: #10b981;
 }
 
+/* 
+ * [ダークモード廃止]
+ * ダークモードを再度有効化する場合は、以下のコメントアウトを外し、
+ * 上の @custom-variant dark の行を削除（またはコメントアウト）してください。
+ */
+/*
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0f172a;
@@ -48,6 +60,7 @@
     --accent: #34d399;
   }
 }
+*/
 
 html, body {
   /* Prevent double tap to zoom */

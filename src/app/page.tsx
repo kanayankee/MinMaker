@@ -106,7 +106,7 @@ export default function HomePage() {
                 />
               </svg>
             </div>
-            <h2 className="text-xl font-bold mb-2">プロジェクトがありません</h2>
+            <h2 className="text-xl font-bold mb-2">プランがありません</h2>
             <p className="text-muted text-sm mb-6 text-center">
               「新規作成」ボタンからタイムスケジュールを
               <br />
@@ -119,7 +119,7 @@ export default function HomePage() {
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
               </svg>
-              最初のプロジェクトを作成
+              プランを作成
             </button>
           </div>
         ) : (

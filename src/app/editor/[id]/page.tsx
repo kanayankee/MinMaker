@@ -132,7 +132,7 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
       })
       .join('\n');
       
-    text += `\n\n${scheduleText}`;
+    text += `\n${scheduleText}`;
     return text;
   }, [project, calculatedItems]);
 
