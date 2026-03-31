@@ -12,6 +12,7 @@ export type Project = {
   items: ScheduleItem[];
   memo?: string;       // メモ内容
   includeMemo?: boolean; // 送信文に含めるか
+  wrapWidth?: number;    // 自動折り返し文字数
   updatedAt: number;   // ソート用タイムスタンプ
 };
 
@@ -37,6 +38,7 @@ export function createDefaultProject(): Project {
         duration: 10,
       },
     ],
+    wrapWidth: 10,
     updatedAt: Date.now(),
   };
 }

@@ -120,8 +120,9 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
             allWrapLines.push('');
             continue;
           }
-          for (let i = 0; i < mLine.length; i += 9) {
-            allWrapLines.push(mLine.slice(i, i + 9));
+          const width = project.wrapWidth || 10;
+          for (let i = 0; i < mLine.length; i += width) {
+            allWrapLines.push(mLine.slice(i, i + width));
           }
         }
         if (allWrapLines.length === 0) allWrapLines = [''];
@@ -282,49 +283,76 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
 
       {/* Export Preview Area */}
       <div className="w-full md:w-80 lg:w-96 bg-surface border-t md:border-t-0 md:border-l border-border h-[50dvh] md:h-dvh flex flex-col">
-        <div className="p-4 border-b border-border flex items-center justify-between sticky top-0 bg-surface z-10">
-          <h3 className="font-bold flex items-center gap-2">
-            <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h7" />
-            </svg>
-            プレビュー
-          </h3>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleCopy}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-              copied
-                ? 'bg-accent/10 border border-accent/20 text-accent'
-                : 'bg-primary border border-primary text-white hover:bg-primary-hover shadow-md shadow-primary/20'
-            }`}
-          >
-            {copied ? (
-              <>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        <div className="p-4 border-b border-border flex flex-col gap-3 sticky top-0 bg-surface z-10">
+          <div className="flex items-center justify-between">
+            <h3 className="font-bold flex items-center gap-2">
+              <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h7" />
+              </svg>
+              プレビュー
+            </h3>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleCopy}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                  copied
+                    ? 'bg-accent/10 border border-accent/20 text-accent'
+                    : 'bg-primary border border-primary text-white hover:bg-primary-hover shadow-md shadow-primary/20'
+                }`}
+              >
+                {copied ? (
+                  <>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    コピー完了
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    コピー
+                  </>
+                )}
+              </button>
+              <a
+                href={`https://line.me/R/msg/text/?${encodeURIComponent(exportText)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-[#06C755] border border-[#06C755] text-white hover:bg-[#05b84d] shadow-md shadow-[#06C755]/20"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
                 </svg>
-                コピー完了
-              </>
-            ) : (
-              <>
+                LINE
+              </a>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between bg-surface-hover rounded-xl p-2 px-3 border border-border">
+            <span className="text-sm font-bold text-muted">自動改行の文字数</span>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => handleUpdateProject({ wrapWidth: Math.max(5, (project.wrapWidth || 10) - 1) })}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-surface border border-border text-muted hover:text-foreground hover:border-primary/30 transition-colors shadow-sm"
+              >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
                 </svg>
-                コピー
-              </>
-            )}
-          </button>
-          <a
-            href={`https://line.me/R/msg/text/?${encodeURIComponent(exportText)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-[#06C755] border border-[#06C755] text-white hover:bg-[#05b84d] shadow-md shadow-[#06C755]/20"
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
-            </svg>
-            LINE
-          </a>
+              </button>
+              <span className="w-6 text-center font-bold text-foreground">
+                {project.wrapWidth ?? 10}
+              </span>
+              <button
+                onClick={() => handleUpdateProject({ wrapWidth: Math.min(40, (project.wrapWidth || 10) + 1) })}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-surface border border-border text-muted hover:text-foreground hover:border-primary/30 transition-colors shadow-sm"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
         <div className="flex-1 p-4 overflow-y-auto bg-[#1e1e1e] m-4 rounded-xl shadow-inner border border-gray-800">
