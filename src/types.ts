@@ -33,7 +33,7 @@ export function createDefaultProject(): Project {
     items: [
       {
         id: generateId(),
-        text: 'アップ',
+        text: '',
         duration: 10,
       },
     ],
